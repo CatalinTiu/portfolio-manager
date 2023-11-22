@@ -1,4 +1,5 @@
 import React from "react";
+import "./ShowcasedWork.css";
 
 const ShowcasedWork = ({ work, onDelete, onToggleVisibility, onEdit }) => {
   return (
@@ -12,10 +13,12 @@ const ShowcasedWork = ({ work, onDelete, onToggleVisibility, onEdit }) => {
           {work.customerLink}
         </a>
       </p>
-      <button onClick={() => onToggleVisibility(work.id)}>
-        {work.isHidden ? "Unhide" : "Hide"}
-      </button>
-      <button onClick={() => onEdit(work.id)}>Edit</button>
+      <div className="button-container">
+        <button onClick={() => onToggleVisibility(work.id)} class>
+          {work.isHidden ? "Unhide" : "Hide"}
+        </button>
+        <button onClick={() => onEdit(work.id)}>Edit</button>
+      </div>
       <button onClick={() => onDelete(work.id)}>Delete</button>
     </div>
   );

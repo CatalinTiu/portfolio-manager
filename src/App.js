@@ -1,6 +1,8 @@
+// App.js
 import React, { useState } from "react";
 import ShowcasedWork from "./ShowcasedWork";
 import WorkForm from "./WorkForm";
+import "./App.css";
 
 const App = () => {
   const [works, setWorks] = useState([
@@ -49,7 +51,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Portfolio Manager</h1>
       {showForm ? (
         <WorkForm
