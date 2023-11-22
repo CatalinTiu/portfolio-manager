@@ -1,25 +1,78 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import ShowcasedWork from "./ShowcasedWork";
+import WorkForm from "./WorkForm";
 
-function App() {
+const App = () => {
+  const [works, setWorks] = useState([
+    {
+      id: 1,
+      title: "Work 1",
+      description: "Description 1",
+      imageUrl: "url1",
+      customerLink: "https://customer1.com",
+      isHidden: false,
+    },
+  ]);
+
+  const [showForm, setShowForm] = useState(false);
+  const [selectedWork, setSelectedWork] = useState(null);
+
+  const handleAddWork = (newWork) => {
+    setWorks([...works, { ...newWork, id: works.length + 1 }]);
+    setShowForm(false);
+  };
+
+  const handleEditWork = (id) => {
+    const workToEdit = works.find((work) => work.id === id);
+    setSelectedWork(workToEdit);
+    setShowForm(true);
+  };
+
+  const handleUpdateWork = (updatedWork) => {
+    setWorks((prevWorks) =>
+      prevWorks.map((work) => (work.id === updatedWork.id ? updatedWork : work))
+    );
+    setShowForm(false);
+    setSelectedWork(null);
+  };
+
+  const handleDeleteWork = (id) => {
+    setWorks(works.filter((work) => work.id !== id));
+  };
+
+  const handleToggleVisibility = (id) => {
+    setWorks((prevWorks) =>
+      prevWorks.map((work) =>
+        work.id === id ? { ...work, isHidden: !work.isHidden } : work
+      )
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Portfolio Manager</h1>
+      {showForm ? (
+        <WorkForm
+          onSubmit={selectedWork ? handleUpdateWork : handleAddWork}
+          onCancel={() => setShowForm(false)}
+          initialData={selectedWork}
+        />
+      ) : (
+        <>
+          <button onClick={() => setShowForm(true)}>Add Work</button>
+          {works.map((work) => (
+            <ShowcasedWork
+              key={work.id}
+              work={work}
+              onDelete={handleDeleteWork}
+              onToggleVisibility={handleToggleVisibility}
+              onEdit={handleEditWork}
+            />
+          ))}
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default App;
